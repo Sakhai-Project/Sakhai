@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+    app:
+        build: .
+        container_name: sakhai_app
+        ports:
+            - "8090:80"
+        depends_on:
+            - db
+        environment:
+            DB_CONNECTION: mysql
+            DB_HOST: db
+            DB_PORT: 3306
+            DB_DATABASE: shakai
+            DB_USERNAME: root
+            DB_PASSWORD: ""
+        volumes:
+            - .:/var/www/html
+
+    db:
+        image: mysql:8
+        container_name: sakhai_db
+        restart: always
+        environment:
+            MYSQL_DATABASE: shakai
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+        ports:
+            - "3390:3306"

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontController;
@@ -13,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 | Web Routes
 |--------------------------------------------------------------------------
 */
+
+// Google OAuth Routes
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 Route::get('/', [FrontController::class, 'index'])->name('front.index');
 Route::get('/details/{product:slug}', [FrontController::class, 'details'])->name('front.details');
@@ -28,7 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::post('/checkout/update-status', [CheckoutController::class, 'updateStatus'])->name('front.checkout.update-status');
-    
+
     // Download free product
     Route::get('/download/{product:slug}', [FrontController::class, 'download'])
         ->name('front.download')
